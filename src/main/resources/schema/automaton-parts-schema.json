@@ -1,5 +1,38 @@
 {
     "definitions": {
+        "automaton": {
+            "description": "Main schema that describes a json automaton",
+            "properties": {
+                "id": {
+                    "description": "Unique id of the automaton instance",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "path": {
+                    "description": "Url path to which this automaton will respond",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Unique name of the automaton",
+                    "type": "string"            
+                },
+                "states": {
+                    "description": "List of automaton states",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#definitions/state"
+                    }
+                },
+                "history": {
+                    "description": "History of automaton's transitions during operation",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#definitions/transition"
+                    }            
+                }
+            },
+            "required": ["path", "name", "states"]            
+        },
         "state": {
             "type": "object",
             "description": "Automaton states",
@@ -75,12 +108,10 @@
         "input": {
             "type": "object",
             "description": "Transition input object"
-            
         },
         "output": {
             "type": "object",
             "description": "Transition/State output object"
-            
         }
     }
 }

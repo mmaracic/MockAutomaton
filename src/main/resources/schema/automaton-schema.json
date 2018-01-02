@@ -1,35 +1,4 @@
 {
     "title": "Automaton",
-    "type": "object",
-    "description": "Main schema that describes a json automaton",
-    "properties": {
-        "id": {
-            "description": "Unique id of the automaton instance",
-            "type": "number",
-            "minimum": 0
-        },
-        "path": {
-            "description": "Url path to which this automaton will respond",
-            "type": "string"
-        },
-        "name": {
-            "description": "Unique name of the automaton",
-            "type": "string"            
-        },
-        "states": {
-            "description": "List of automaton states",
-            "type": "array",
-            "items": {
-                "$ref": "state-schema.json#definitions/state"
-            }
-        },
-        "history": {
-            "description": "History of automaton's transitions during operation",
-            "type": "array",
-            "items": {
-                "$ref": "state-schema.json#definitions/transition"
-            }            
-        }
-    },
-    "required": ["path", "name", "states"]
+    "$ref": "automaton-parts-schema.json#definitions/automaton"
 }
