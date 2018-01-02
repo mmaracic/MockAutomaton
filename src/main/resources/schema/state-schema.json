@@ -1,0 +1,86 @@
+{
+    "definitions": {
+        "state": {
+            "type": "object",
+            "description": "Automaton states",
+            "properties": {
+                "id": {
+                    "description": "Unique id of the state",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "starting": {
+                    "description": "True if this is a starting state",
+                    "type": "boolean"
+                },
+                "ending": {
+                    "description": "True if this is an ending state",
+                    "type": "boolean"
+                },
+                "output": {
+                    "description": "State output, if any",
+                    "$ref": "#definitions/output"
+                },
+                "transitions": {
+                    "description": "Outgoing transitions of this state",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#definitions/transition"
+                    }
+                }
+            },
+            "required": ["id", "starting", "ending", "transitions"]
+        },
+        "transition": {
+            "type": "object",
+            "description": "Automaton states",
+            "properties": {
+                "id": {
+                    "description": "Unique id of the state",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "input": {
+                    "description": "Input data that can trigger this transition, has to match all existing items",
+                    "type": "object"
+                },
+                "path": {
+                    "description": "Subpath that can trigger this transition, has to be matched perfectly",
+                    "type": "string"                    
+                },
+                "delay": {
+                    "description": "Time period that will triger this transition",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "target": {
+                    "description": "Id of the state that is the destination of this transition",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "output": {
+                    "description": "Transition output, if any",
+                    "$ref": "#definitions/output"
+                }
+            },
+            "required": ["id", "target"],
+            "anyOf": [{
+                    "required": ["input"]
+                }, {
+                    "required": ["path"]
+                }, {
+                    "required": ["delay"]
+                }]
+        },
+        "input": {
+            "type": "object",
+            "description": "Transition input object"
+            
+        },
+        "output": {
+            "type": "object",
+            "description": "Transition/State output object"
+            
+        }
+    }
+}
