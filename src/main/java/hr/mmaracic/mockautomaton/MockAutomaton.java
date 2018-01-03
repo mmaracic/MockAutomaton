@@ -9,6 +9,10 @@ import hr.mmaracic.mockautomaton.model.AutomatonSchema;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
  *
@@ -18,16 +22,31 @@ public class MockAutomaton{
     static private List<AutomatonParameterDescriptor> parameterDescriptorsList;
             
     private final Server server;
-    private final AutomatonSchema automaton;
+    private final List<AutomatonSchema> automatons;
     
-    public MockAutomaton(int port, AutomatonSchema automaton) {
-        this.automaton = automaton;
+    public MockAutomaton(String host, int port, List<AutomatonSchema> automatons) {
+        this.automatons = automatons;
         
-        this.server = new Server(port);
+        this.server = new Server();
+        
+        ServerConnector serverConnector = new ServerConnector(server);
+        serverConnector.setHost(host);
+        serverConnector.setPort(port);
+        
+        server.addConnector(serverConnector);
+        
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/");
+        server.setHandler(context);
+        
+        for(AutomatonSchema automaton: automatons){
+            ServletHolder servletHolder = context.addServlet(AutomatonServlet.class, "/");
+        }
     }
     
     public void start() throws Exception{
         this.server.start();
+        //this.server.join();
     }
     
     public void stop() throws Exception{
