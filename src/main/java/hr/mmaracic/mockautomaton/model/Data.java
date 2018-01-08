@@ -12,16 +12,11 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-
-/**
- * Transition/State output object
- * 
- */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
 
 })
-public class Output {
+public class Data {
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -51,10 +46,10 @@ public class Output {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Output) == false) {
+        if ((other instanceof Data) == false) {
             return false;
         }
-        Output rhs = ((Output) other);
+        Data rhs = ((Data) other);
         return new EqualsBuilder().append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 

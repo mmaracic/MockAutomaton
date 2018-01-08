@@ -5,8 +5,7 @@
             "properties": {
                 "id": {
                     "description": "Unique id of the automaton instance",
-                    "type": "number",
-                    "minimum": 0
+                    "type": "string"
                 },
                 "path": {
                     "description": "Url path to which this automaton will respond",
@@ -22,13 +21,6 @@
                     "items": {
                         "$ref": "#definitions/state"
                     }
-                },
-                "history": {
-                    "description": "History of automaton's transitions during operation",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#definitions/transition"
-                    }            
                 }
             },
             "required": ["path", "name", "states"]            
@@ -73,11 +65,11 @@
                     "type": "number",
                     "minimum": 0
                 },
-                "input": {
+                "data": {
                     "description": "Input data that can trigger this transition, has to match all existing items",
-                    "type": "object"
+                    "$ref": "#definitions/data"
                 },
-                "path": {
+                "subpath": {
                     "description": "Subpath that can trigger this transition, has to be matched perfectly",
                     "type": "string"                    
                 },
@@ -98,20 +90,37 @@
             },
             "required": ["id", "target"],
             "anyOf": [{
-                    "required": ["input"]
+                    "required": ["data"]
                 }, {
                     "required": ["path"]
                 }, {
                     "required": ["delay"]
                 }]
         },
-        "input": {
-            "type": "object",
-            "description": "Transition input object"
-        },
         "output": {
             "type": "object",
-            "description": "Transition/State output object"
+            "description": "Transition/State output object",
+            "properties": {
+                "host": {
+                    "description": "Target host",
+                    "type": "string"
+                },
+                "port": {
+                    "description": "Target host port",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "Target host path",
+                    "type": "string"
+                },
+                "data": {
+                    "description": "Output data",
+                    "$ref": "#definitions/data"
+                }                
+            }
+        },
+        "data": {
+            "type": "object"
         }
     }
 }

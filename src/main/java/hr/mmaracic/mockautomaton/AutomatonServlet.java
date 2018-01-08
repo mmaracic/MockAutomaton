@@ -5,9 +5,10 @@
  */
 package hr.mmaracic.mockautomaton;
 
-import hr.mmaracic.mockautomaton.model.AutomatonSchema;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,15 @@ public class AutomatonServlet extends HttpServlet{
         
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String path = req.getPathInfo();
+        int length = req.getContentLength();
+        byte[] buffer = new byte[length];
+        ServletInputStream sis = req.getInputStream();
+        int bytesRead = sis.read(buffer);
+        if (bytesRead != length){
+            throw new ServletException("Content read error: Read "+bytesRead+" instead of "+length+"bytes");
+        }
+        String body = new String(buffer);
         
     }
 }
