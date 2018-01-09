@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -27,8 +24,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @JsonPropertyOrder({
     "id",
     "path",
-    "type",
+    "automatonType",
     "name",
+    "variables",
     "states"
 })
 public class AutomatonSchema {
@@ -50,12 +48,11 @@ public class AutomatonSchema {
     private String path;
     /**
      * Type of the automaton - Json or Xml
-     * (Required)
      * 
      */
-    @JsonProperty("type")
+    @JsonProperty("automatonType")
     @JsonPropertyDescription("Type of the automaton - Json or Xml")
-    private AutomatonSchema.Type type;
+    private AutomatonSchema.AutomatonType automatonType;
     /**
      * Unique name of the automaton
      * (Required)
@@ -64,6 +61,8 @@ public class AutomatonSchema {
     @JsonProperty("name")
     @JsonPropertyDescription("Unique name of the automaton")
     private String name;
+    @JsonProperty("variables")
+    private List<Variable> variables = new ArrayList<Variable>();
     /**
      * List of automaton states
      * (Required)
@@ -72,8 +71,6 @@ public class AutomatonSchema {
     @JsonProperty("states")
     @JsonPropertyDescription("List of automaton states")
     private List<State> states = new ArrayList<State>();
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * Unique id of the automaton instance
@@ -115,22 +112,20 @@ public class AutomatonSchema {
 
     /**
      * Type of the automaton - Json or Xml
-     * (Required)
      * 
      */
-    @JsonProperty("type")
-    public AutomatonSchema.Type getType() {
-        return type;
+    @JsonProperty("automatonType")
+    public AutomatonSchema.AutomatonType getAutomatonType() {
+        return automatonType;
     }
 
     /**
      * Type of the automaton - Json or Xml
-     * (Required)
      * 
      */
-    @JsonProperty("type")
-    public void setType(AutomatonSchema.Type type) {
-        this.type = type;
+    @JsonProperty("automatonType")
+    public void setAutomatonType(AutomatonSchema.AutomatonType automatonType) {
+        this.automatonType = automatonType;
     }
 
     /**
@@ -153,6 +148,16 @@ public class AutomatonSchema {
         this.name = name;
     }
 
+    @JsonProperty("variables")
+    public List<Variable> getVariables() {
+        return variables;
+    }
+
+    @JsonProperty("variables")
+    public void setVariables(List<Variable> variables) {
+        this.variables = variables;
+    }
+
     /**
      * List of automaton states
      * (Required)
@@ -173,24 +178,14 @@ public class AutomatonSchema {
         this.states = states;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("path", path).append("type", type).append("name", name).append("states", states).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("id", id).append("path", path).append("automatonType", automatonType).append("name", name).append("variables", variables).append("states", states).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(path).append(name).append(id).append(additionalProperties).append(type).append(states).toHashCode();
+        return new HashCodeBuilder().append(path).append(variables).append(name).append(id).append(automatonType).append(states).toHashCode();
     }
 
     @Override
@@ -202,23 +197,23 @@ public class AutomatonSchema {
             return false;
         }
         AutomatonSchema rhs = ((AutomatonSchema) other);
-        return new EqualsBuilder().append(path, rhs.path).append(name, rhs.name).append(id, rhs.id).append(additionalProperties, rhs.additionalProperties).append(type, rhs.type).append(states, rhs.states).isEquals();
+        return new EqualsBuilder().append(path, rhs.path).append(variables, rhs.variables).append(name, rhs.name).append(id, rhs.id).append(automatonType, rhs.automatonType).append(states, rhs.states).isEquals();
     }
 
-    public enum Type {
+    public enum AutomatonType {
 
         JSON("JSON"),
         XML("XML");
         private final String value;
-        private final static Map<String, AutomatonSchema.Type> CONSTANTS = new HashMap<String, AutomatonSchema.Type>();
+        private final static Map<String, AutomatonSchema.AutomatonType> CONSTANTS = new HashMap<String, AutomatonSchema.AutomatonType>();
 
         static {
-            for (AutomatonSchema.Type c: values()) {
+            for (AutomatonSchema.AutomatonType c: values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
 
-        private Type(String value) {
+        private AutomatonType(String value) {
             this.value = value;
         }
 
@@ -233,8 +228,8 @@ public class AutomatonSchema {
         }
 
         @JsonCreator
-        public static AutomatonSchema.Type fromValue(String value) {
-            AutomatonSchema.Type constant = CONSTANTS.get(value);
+        public static AutomatonSchema.AutomatonType fromValue(String value) {
+            AutomatonSchema.AutomatonType constant = CONSTANTS.get(value);
             if (constant == null) {
                 throw new IllegalArgumentException(value);
             } else {

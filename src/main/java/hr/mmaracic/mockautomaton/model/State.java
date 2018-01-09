@@ -2,12 +2,7 @@
 package hr.mmaracic.mockautomaton.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -38,7 +33,7 @@ public class State {
      */
     @JsonProperty("id")
     @JsonPropertyDescription("Unique id of the state")
-    private Double id;
+    private String id;
     /**
      * True if this is a starting state
      * (Required)
@@ -70,8 +65,6 @@ public class State {
     @JsonProperty("transitions")
     @JsonPropertyDescription("Outgoing transitions of this state")
     private List<Transition> transitions = new ArrayList<Transition>();
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * Unique id of the state
@@ -79,7 +72,7 @@ public class State {
      * 
      */
     @JsonProperty("id")
-    public Double getId() {
+    public String getId() {
         return id;
     }
 
@@ -89,7 +82,7 @@ public class State {
      * 
      */
     @JsonProperty("id")
-    public void setId(Double id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -171,24 +164,14 @@ public class State {
         this.transitions = transitions;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("starting", starting).append("ending", ending).append("output", output).append("transitions", transitions).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("id", id).append("starting", starting).append("ending", ending).append("output", output).append("transitions", transitions).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(output).append(ending).append(id).append(additionalProperties).append(starting).append(transitions).toHashCode();
+        return new HashCodeBuilder().append(output).append(ending).append(id).append(starting).append(transitions).toHashCode();
     }
 
     @Override
@@ -200,7 +183,7 @@ public class State {
             return false;
         }
         State rhs = ((State) other);
-        return new EqualsBuilder().append(output, rhs.output).append(ending, rhs.ending).append(id, rhs.id).append(additionalProperties, rhs.additionalProperties).append(starting, rhs.starting).append(transitions, rhs.transitions).isEquals();
+        return new EqualsBuilder().append(output, rhs.output).append(ending, rhs.ending).append(id, rhs.id).append(starting, rhs.starting).append(transitions, rhs.transitions).isEquals();
     }
 
 }

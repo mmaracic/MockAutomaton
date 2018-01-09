@@ -1,11 +1,6 @@
 
 package hr.mmaracic.mockautomaton.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -22,7 +17,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "id",
-    "data",
+    "input",
     "subpath",
     "delay",
     "target",
@@ -37,9 +32,9 @@ public class Transition {
      */
     @JsonProperty("id")
     @JsonPropertyDescription("Unique id of the state")
-    private Double id;
-    @JsonProperty("data")
-    private Data data;
+    private String id;
+    @JsonProperty("input")
+    private String input;
     /**
      * Subpath that can trigger this transition, has to be matched perfectly
      * 
@@ -61,7 +56,7 @@ public class Transition {
      */
     @JsonProperty("target")
     @JsonPropertyDescription("Id of the state that is the destination of this transition")
-    private Double target;
+    private String target;
     /**
      * Transition/State output object
      * 
@@ -69,8 +64,6 @@ public class Transition {
     @JsonProperty("output")
     @JsonPropertyDescription("Transition/State output object")
     private Output output;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * Unique id of the state
@@ -78,7 +71,7 @@ public class Transition {
      * 
      */
     @JsonProperty("id")
-    public Double getId() {
+    public String getId() {
         return id;
     }
 
@@ -88,18 +81,18 @@ public class Transition {
      * 
      */
     @JsonProperty("id")
-    public void setId(Double id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    @JsonProperty("data")
-    public Data getData() {
-        return data;
+    @JsonProperty("input")
+    public String getInput() {
+        return input;
     }
 
-    @JsonProperty("data")
-    public void setData(Data data) {
-        this.data = data;
+    @JsonProperty("input")
+    public void setInput(String input) {
+        this.input = input;
     }
 
     /**
@@ -144,7 +137,7 @@ public class Transition {
      * 
      */
     @JsonProperty("target")
-    public Double getTarget() {
+    public String getTarget() {
         return target;
     }
 
@@ -154,7 +147,7 @@ public class Transition {
      * 
      */
     @JsonProperty("target")
-    public void setTarget(Double target) {
+    public void setTarget(String target) {
         this.target = target;
     }
 
@@ -176,24 +169,14 @@ public class Transition {
         this.output = output;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("data", data).append("subpath", subpath).append("delay", delay).append("target", target).append("output", output).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("id", id).append("input", input).append("subpath", subpath).append("delay", delay).append("target", target).append("output", output).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(output).append(delay).append(data).append(subpath).append(id).append(additionalProperties).append(target).toHashCode();
+        return new HashCodeBuilder().append(output).append(input).append(delay).append(subpath).append(id).append(target).toHashCode();
     }
 
     @Override
@@ -205,7 +188,7 @@ public class Transition {
             return false;
         }
         Transition rhs = ((Transition) other);
-        return new EqualsBuilder().append(output, rhs.output).append(delay, rhs.delay).append(data, rhs.data).append(subpath, rhs.subpath).append(id, rhs.id).append(additionalProperties, rhs.additionalProperties).append(target, rhs.target).isEquals();
+        return new EqualsBuilder().append(output, rhs.output).append(input, rhs.input).append(delay, rhs.delay).append(subpath, rhs.subpath).append(id, rhs.id).append(target, rhs.target).isEquals();
     }
 
 }

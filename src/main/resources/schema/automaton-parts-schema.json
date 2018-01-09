@@ -11,7 +11,7 @@
                     "description": "Url path to which this automaton will respond",
                     "type": "string"
                 },
-                "type": {
+                "automatonType": {
                     "description": "Type of the automaton - Json or Xml",
                     "type": "string",
                     "enum": ["JSON", "XML"]
@@ -20,15 +20,43 @@
                     "description": "Unique name of the automaton",
                     "type": "string"            
                 },
+                "variables": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "variableType": {
+                                "type": "string",
+                                "enum": ["number", "string"]
+                            },
+                            "value": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "number"
+                                    }
+                                ]
+                            }
+                         },
+                         "required": ["name", "variableType", "value"],
+                         "additionalProperties": false
+                    }
+                },
                 "states": {
                     "description": "List of automaton states",
                     "type": "array",
                     "items": {
-                        "$ref": "#definitions/state"
+                        "$ref": "#/definitions/state"
                     }
                 }
             },
-            "required": ["path", "name", "states", "type"]            
+            "required": ["path", "name", "states", "type"],
+            "additionalProperties": false
         },
         "state": {
             "type": "object",
@@ -36,7 +64,7 @@
             "properties": {
                 "id": {
                     "description": "Unique id of the state",
-                    "type": "number",
+                    "type": "string",
                     "minimum": 0
                 },
                 "starting": {
@@ -49,17 +77,18 @@
                 },
                 "output": {
                     "description": "State output, if any",
-                    "$ref": "#definitions/output"
+                    "$ref": "#/definitions/output"
                 },
                 "transitions": {
                     "description": "Outgoing transitions of this state",
                     "type": "array",
                     "items": {
-                        "$ref": "#definitions/transition"
+                        "$ref": "#/definitions/transition"
                     }
                 }
             },
-            "required": ["id", "starting", "ending", "transitions"]
+            "required": ["id", "starting", "ending", "transitions"],
+            "additionalProperties": false
         },
         "transition": {
             "type": "object",
@@ -67,12 +96,11 @@
             "properties": {
                 "id": {
                     "description": "Unique id of the state",
-                    "type": "number",
-                    "minimum": 0
+                    "type": "string"
                 },
-                "data": {
+                "input": {
                     "description": "Input data that can trigger this transition, has to match all existing items",
-                    "$ref": "#definitions/data"
+                    "$ref": "#/definitions/data"
                 },
                 "subpath": {
                     "description": "Subpath that can trigger this transition, has to be matched perfectly",
@@ -85,15 +113,16 @@
                 },
                 "target": {
                     "description": "Id of the state that is the destination of this transition",
-                    "type": "number",
+                    "type": "string",
                     "minimum": 0
                 },
                 "output": {
                     "description": "Transition output, if any",
-                    "$ref": "#definitions/output"
+                    "$ref": "#/definitions/output"
                 }
             },
             "required": ["id", "target"],
+            "additionalProperties": false,
             "anyOf": [{
                     "required": ["data"]
                 }, {
@@ -118,14 +147,17 @@
                     "description": "Target host path",
                     "type": "string"
                 },
-                "data": {
+                "template": {
                     "description": "Output data",
-                    "$ref": "#definitions/data"
+                    "$ref": "#/definitions/data"
                 }                
-            }
+            },
+            "required": ["host", "port", "path", "data"],
+            "additionalProperties": false
         },
         "data": {
-            "type": "object"
+            "type": "string",
+            "additionalProperties": false
         }
     }
 }

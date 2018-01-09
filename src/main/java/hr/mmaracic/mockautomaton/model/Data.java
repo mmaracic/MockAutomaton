@@ -1,11 +1,6 @@
 
 package hr.mmaracic.mockautomaton.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -18,27 +13,15 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 })
 public class Data {
 
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().toHashCode();
     }
 
     @Override
@@ -50,7 +33,7 @@ public class Data {
             return false;
         }
         Data rhs = ((Data) other);
-        return new EqualsBuilder().append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().isEquals();
     }
 
 }

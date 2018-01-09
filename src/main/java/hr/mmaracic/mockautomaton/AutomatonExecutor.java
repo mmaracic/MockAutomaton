@@ -6,7 +6,6 @@
 package hr.mmaracic.mockautomaton;
 
 import hr.mmaracic.mockautomaton.model.AutomatonSchema;
-import hr.mmaracic.mockautomaton.model.Transition;
 import hr.mmaracic.mockautomaton.model.internal.Automaton;
 import java.util.HashMap;
 import java.util.List;
@@ -33,29 +32,30 @@ public class AutomatonExecutor {
         }        
     }
     
-    public void processEvent(Automaton automaton, Transition tr){
-        try {
-            throw new Exception("Not implemented yet!");
-        } catch (Exception ex) {
-            logger.log(Level.ERROR, null, ex);
+    public String processEvent(String automatonId, Long transitionId){
+        for(Automaton automaton: automatons.values()){
+            if (automaton.getId().compareTo(automatonId) == 0){
+                return automaton.executeTransitionForDelay(transitionId);
+            }           
         }
+        String errMessage = "Delay defined by automatonId: "+automatonId+" and transitionId: "+transitionId+" was not processed by existing automatons!";
+        logger.log(Level.ERROR, errMessage);
+        return errMessage;
     }
 
-    public void processEvent(String path, String body){
-        try {
-            for(Automaton automaton: automatons.values()){
-                String basePath = automaton.getPath();
-                if (path.startsWith(path)){
-                    String subpath = path.substring(basePath.length());
-                    if (subpath.startsWith("/")){
-                        subpath = subpath.substring(1);
-                    }
-                    automaton.changeStateBecauseInput(subpath, body);
+    public String processEvent(String path, String body){
+        for(Automaton automaton: automatons.values()){
+            String basePath = automaton.getPath();
+            if (path.startsWith(path)){
+                String subpath = path.substring(basePath.length());
+                if (subpath.startsWith("/")){
+                    subpath = subpath.substring(1);
                 }
+                return automaton.executeTransitionForInput(subpath, body);
             }
-            throw new Exception("Not implemented yet!");
-        } catch (Exception ex) {
-            logger.log(Level.ERROR, null, ex);
         }
+        String errMessage = "Input event defined by path: "+path+" was not processed by existing automatons!";
+        logger.log(Level.ERROR, errMessage);
+        return errMessage;
     }
 }

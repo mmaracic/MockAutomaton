@@ -8,10 +8,11 @@ package hr.mmaracic.mockautomaton;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.Getter;
+import org.eclipse.jetty.http.HttpStatus;
 
 /**
  *
@@ -37,6 +38,9 @@ public class AutomatonServlet extends HttpServlet{
             throw new ServletException("Content read error: Read "+bytesRead+" instead of "+length+"bytes");
         }
         String body = new String(buffer);
-        this.automatonExecutor.processEvent(path, body);        
+        String respBody = this.automatonExecutor.processEvent(path, body);
+        resp.setStatus(HttpStatus.ACCEPTED_202);
+        ServletOutputStream outputStream = resp.getOutputStream();
+        outputStream.print(respBody);
     }
 }

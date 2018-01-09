@@ -1,11 +1,6 @@
 
 package hr.mmaracic.mockautomaton.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -24,12 +19,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
     "host",
     "port",
     "path",
-    "data"
+    "template"
 })
 public class Output {
 
     /**
      * Target host
+     * (Required)
      * 
      */
     @JsonProperty("host")
@@ -37,6 +33,7 @@ public class Output {
     private String host;
     /**
      * Target host port
+     * (Required)
      * 
      */
     @JsonProperty("port")
@@ -44,18 +41,18 @@ public class Output {
     private String port;
     /**
      * Target host path
+     * (Required)
      * 
      */
     @JsonProperty("path")
     @JsonPropertyDescription("Target host path")
     private String path;
-    @JsonProperty("data")
-    private Data data;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    @JsonProperty("template")
+    private String template;
 
     /**
      * Target host
+     * (Required)
      * 
      */
     @JsonProperty("host")
@@ -65,6 +62,7 @@ public class Output {
 
     /**
      * Target host
+     * (Required)
      * 
      */
     @JsonProperty("host")
@@ -74,6 +72,7 @@ public class Output {
 
     /**
      * Target host port
+     * (Required)
      * 
      */
     @JsonProperty("port")
@@ -83,6 +82,7 @@ public class Output {
 
     /**
      * Target host port
+     * (Required)
      * 
      */
     @JsonProperty("port")
@@ -92,6 +92,7 @@ public class Output {
 
     /**
      * Target host path
+     * (Required)
      * 
      */
     @JsonProperty("path")
@@ -101,6 +102,7 @@ public class Output {
 
     /**
      * Target host path
+     * (Required)
      * 
      */
     @JsonProperty("path")
@@ -108,34 +110,24 @@ public class Output {
         this.path = path;
     }
 
-    @JsonProperty("data")
-    public Data getData() {
-        return data;
+    @JsonProperty("template")
+    public String getTemplate() {
+        return template;
     }
 
-    @JsonProperty("data")
-    public void setData(Data data) {
-        this.data = data;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
+    @JsonProperty("template")
+    public void setTemplate(String template) {
+        this.template = template;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("host", host).append("port", port).append("path", path).append("data", data).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("host", host).append("port", port).append("path", path).append("template", template).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(host).append(path).append(additionalProperties).append(data).append(port).toHashCode();
+        return new HashCodeBuilder().append(host).append(template).append(path).append(port).toHashCode();
     }
 
     @Override
@@ -147,7 +139,7 @@ public class Output {
             return false;
         }
         Output rhs = ((Output) other);
-        return new EqualsBuilder().append(host, rhs.host).append(path, rhs.path).append(additionalProperties, rhs.additionalProperties).append(data, rhs.data).append(port, rhs.port).isEquals();
+        return new EqualsBuilder().append(host, rhs.host).append(template, rhs.template).append(path, rhs.path).append(port, rhs.port).isEquals();
     }
 
 }
