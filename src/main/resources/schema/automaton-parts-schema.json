@@ -11,6 +11,11 @@
                     "description": "Url path to which this automaton will respond",
                     "type": "string"
                 },
+                "type": {
+                    "description": "Type of the automaton - Json or Xml",
+                    "type": "string",
+                    "enum": ["JSON", "XML"]
+                },
                 "name": {
                     "description": "Unique name of the automaton",
                     "type": "string"            
@@ -23,7 +28,7 @@
                     }
                 }
             },
-            "required": ["path", "name", "states"]            
+            "required": ["path", "name", "states", "type"]            
         },
         "state": {
             "type": "object",

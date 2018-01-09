@@ -6,7 +6,6 @@
 package hr.mmaracic.mockautomaton;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +18,13 @@ import lombok.Getter;
  * @author Marijo
  */
 
-@Getter
 public class AutomatonServlet extends HttpServlet{
+    
+    private final AutomatonExecutor automatonExecutor;
+
+    public AutomatonServlet(AutomatonExecutor executor) {
+        this.automatonExecutor = executor;
+    }
         
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,6 +37,6 @@ public class AutomatonServlet extends HttpServlet{
             throw new ServletException("Content read error: Read "+bytesRead+" instead of "+length+"bytes");
         }
         String body = new String(buffer);
-        
+        this.automatonExecutor.processEvent(path, body);        
     }
 }

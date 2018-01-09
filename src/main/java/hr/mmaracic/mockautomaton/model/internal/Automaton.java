@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.Getter;
-import lombok.Setter;
 import org.apache.log4j.Logger;
 
 /**
@@ -53,7 +52,7 @@ public class Automaton extends AutomatonSchema{
         }
     }
     
-    Transition changeState(String subpath, Object input){
+    public Transition changeStateBecauseInput(String subpath, String input){
         Transition transition = null;
         
         if (transition != null){
@@ -62,7 +61,7 @@ public class Automaton extends AutomatonSchema{
         return transition;
     }
     
-    List<Transition> checkForDelayTransitions(){
+    private List<Transition> checkForDelayTransitions(){
         List<Transition> transitions = this.currentState.getTransitions();
         List<Transition> delayTransitions = transitions.stream().filter(transition -> {
             if (transition.getDelay() != null && transition.getDelay()>0){

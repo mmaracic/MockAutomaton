@@ -11,6 +11,7 @@ import java.util.List;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
  *
@@ -20,11 +21,9 @@ public class MockAutomaton{
     static private List<AutomatonParameterDescriptor> parameterDescriptorsList;
             
     private final Server server;
-    private final List<AutomatonSchema> automatonDefinitions;
     private final AutomatonExecutor automatonExecutor;
     
     public MockAutomaton(String host, int port, List<AutomatonSchema> automatonDefinitions) {
-        this.automatonDefinitions = automatonDefinitions;
         this.automatonExecutor = new AutomatonExecutor(automatonDefinitions);
         
         this.server = new Server();
@@ -37,8 +36,9 @@ public class MockAutomaton{
         
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        server.setHandler(context);        
-        context.addServlet(AutomatonServlet.class, "/");
+        server.setHandler(context);
+        
+        context.addServlet(new ServletHolder(new AutomatonServlet(automatonExecutor)), "/");
     }
     
     public void start() throws Exception{

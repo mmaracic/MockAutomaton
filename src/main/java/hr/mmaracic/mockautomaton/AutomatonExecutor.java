@@ -43,6 +43,16 @@ public class AutomatonExecutor {
 
     public void processEvent(String path, String body){
         try {
+            for(Automaton automaton: automatons.values()){
+                String basePath = automaton.getPath();
+                if (path.startsWith(path)){
+                    String subpath = path.substring(basePath.length());
+                    if (subpath.startsWith("/")){
+                        subpath = subpath.substring(1);
+                    }
+                    automaton.changeStateBecauseInput(subpath, body);
+                }
+            }
             throw new Exception("Not implemented yet!");
         } catch (Exception ex) {
             logger.log(Level.ERROR, null, ex);
