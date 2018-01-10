@@ -7,6 +7,7 @@ package hr.mmaracic.mockautomaton;
 
 import hr.mmaracic.mockautomaton.model.AutomatonSchema;
 import hr.mmaracic.mockautomaton.model.internal.Automaton;
+import hr.mmaracic.mockautomaton.model.internal.AutomatonExecutionState;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +33,9 @@ public class AutomatonExecutor {
         }        
     }
     
-    public String processEvent(String automatonId, Long transitionId){
+    public String processDataEvent(String automatonId, String transitionId){
         for(Automaton automaton: automatons.values()){
+            if (automaton.getAutomatonExecutionState() == AutomatonExecutionState.STOPPED) continue;
             if (automaton.getId().compareTo(automatonId) == 0){
                 return automaton.executeTransitionForDelay(transitionId);
             }           
@@ -43,8 +45,9 @@ public class AutomatonExecutor {
         return errMessage;
     }
 
-    public String processEvent(String path, String body){
+    public String processDelayEvent(String path, String body){
         for(Automaton automaton: automatons.values()){
+            if (automaton.getAutomatonExecutionState() == AutomatonExecutionState.STOPPED) continue;
             String basePath = automaton.getPath();
             if (path.startsWith(path)){
                 String subpath = path.substring(basePath.length());

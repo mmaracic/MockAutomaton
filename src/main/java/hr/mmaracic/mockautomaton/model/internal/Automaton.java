@@ -56,6 +56,8 @@ public class Automaton extends AutomatonSchema{
         
         //validate automaton structure
         checkStatesAndTransitions();
+        
+        automatonExecutionState = AutomatonExecutionState.WORKING;
     }
     
     public void reset(){
@@ -82,12 +84,28 @@ public class Automaton extends AutomatonSchema{
         return errorMessage;
     }
     
-    public String executeTransitionForDelay(Long transitionId){
+    public String executeTransitionForDelay(String transitionId){
+        for(Transition transition: this.currentState.getTransitions()){
+            if(transition.getId().compareTo(transitionId)==0){
+                String transitionOutput = OutputGenerator.generateOutput(inputHistorys, internalVariables, transition.getOutput().getTemplate());
+                this.transitionHistorys.add(transition);
+                String targetStateId = transition.getTarget();
+                String stateOutput = changeState(targetStateId);
+                return (transitionOutput != null || stateOutput != null) ? transitionOutput + stateOutput : null;
+            }
+        }
+        String errorMessage = "Transition with id: "+transitionId+" could not be found on the state with id: "+currentState.getId();
+        logger.info(errorMessage);
+        return errorMessage;        
     }
     
     public String changeState(String targetStateId){
-        currentState = getStates().stream().filter(state -> state.getId().compareToIgnoreCase(targetStateId)==0)
+        State newState = getStates().stream().filter(state -> state.getId().compareToIgnoreCase(targetStateId)==0)
                 .collect(Collectors.toList()).get(0);
+        currentState = newState;
+        if (currentState.getEnding()){
+            automatonExecutionState = AutomatonExecutionState.STOPPED;
+        }
         String stateOutput = null;
         return stateOutput;
     }
@@ -119,7 +137,7 @@ public class Automaton extends AutomatonSchema{
     }
     
     private Map<String, Object> fillInternalVariables(){
-        HashMap<String, Object> internalVariables = new HashMap();
+        HashMap<String, Object> variableMap = new HashMap();
         List<Variable> variables = this.getVariables();
         for(Variable variable: variables){
             String name = variable.getName();
@@ -127,14 +145,15 @@ public class Automaton extends AutomatonSchema{
             Object value = null;
             switch(t){
                 case NUMBER:
-                    value = ((Number) variable.getValue()).longValue();
+                    value = ((Number) variable.getValue()).longValue(); break;
                 case STRING:
-                    value = String.valueOf(variable.getValue());
+                    value = String.valueOf(variable.getValue()); break;
                 default:
                     throw new IllegalArgumentException("Variable: "+name+" has an unallowed type: "+t.toString());
             }
+            variableMap.put(name, value);
         }
-        return internalVariables;
+        return variableMap;
     }
     
     private void checkStatesAndTransitions(){

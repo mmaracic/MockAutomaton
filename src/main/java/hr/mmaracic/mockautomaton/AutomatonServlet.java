@@ -38,7 +38,7 @@ public class AutomatonServlet extends HttpServlet{
             throw new ServletException("Content read error: Read "+bytesRead+" instead of "+length+"bytes");
         }
         String body = new String(buffer);
-        String respBody = this.automatonExecutor.processEvent(path, body);
+        String respBody = this.automatonExecutor.processDataEvent(path, body);
         resp.setStatus(HttpStatus.ACCEPTED_202);
         ServletOutputStream outputStream = resp.getOutputStream();
         outputStream.print(respBody);
