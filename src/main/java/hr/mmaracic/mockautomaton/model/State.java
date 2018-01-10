@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "id",
+    "description",
     "starting",
     "ending",
     "output",
@@ -34,6 +35,8 @@ public class State {
     @JsonProperty("id")
     @JsonPropertyDescription("Unique id of the state")
     private String id;
+    @JsonProperty("description")
+    private String description;
     /**
      * True if this is a starting state
      * (Required)
@@ -84,6 +87,16 @@ public class State {
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
+    }
+
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
+    }
+
+    @JsonProperty("description")
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -166,12 +179,12 @@ public class State {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("starting", starting).append("ending", ending).append("output", output).append("transitions", transitions).toString();
+        return new ToStringBuilder(this).append("id", id).append("description", description).append("starting", starting).append("ending", ending).append("output", output).append("transitions", transitions).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(output).append(ending).append(id).append(starting).append(transitions).toHashCode();
+        return new HashCodeBuilder().append(output).append(ending).append(description).append(id).append(starting).append(transitions).toHashCode();
     }
 
     @Override
@@ -183,7 +196,7 @@ public class State {
             return false;
         }
         State rhs = ((State) other);
-        return new EqualsBuilder().append(output, rhs.output).append(ending, rhs.ending).append(id, rhs.id).append(starting, rhs.starting).append(transitions, rhs.transitions).isEquals();
+        return new EqualsBuilder().append(output, rhs.output).append(ending, rhs.ending).append(description, rhs.description).append(id, rhs.id).append(starting, rhs.starting).append(transitions, rhs.transitions).isEquals();
     }
 
 }

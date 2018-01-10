@@ -24,6 +24,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @JsonPropertyOrder({
     "id",
     "path",
+    "params",
     "automatonType",
     "name",
     "variables",
@@ -46,6 +47,8 @@ public class AutomatonSchema {
     @JsonProperty("path")
     @JsonPropertyDescription("Url path to which this automaton will respond")
     private String path;
+    @JsonProperty("params")
+    private List<Param> params = new ArrayList<Param>();
     /**
      * Type of the automaton - Json or Xml
      * 
@@ -108,6 +111,16 @@ public class AutomatonSchema {
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
+    }
+
+    @JsonProperty("params")
+    public List<Param> getParams() {
+        return params;
+    }
+
+    @JsonProperty("params")
+    public void setParams(List<Param> params) {
+        this.params = params;
     }
 
     /**
@@ -180,12 +193,12 @@ public class AutomatonSchema {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("path", path).append("automatonType", automatonType).append("name", name).append("variables", variables).append("states", states).toString();
+        return new ToStringBuilder(this).append("id", id).append("path", path).append("params", params).append("automatonType", automatonType).append("name", name).append("variables", variables).append("states", states).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(path).append(variables).append(name).append(id).append(automatonType).append(states).toHashCode();
+        return new HashCodeBuilder().append(path).append(variables).append(name).append(id).append(params).append(automatonType).append(states).toHashCode();
     }
 
     @Override
@@ -197,7 +210,7 @@ public class AutomatonSchema {
             return false;
         }
         AutomatonSchema rhs = ((AutomatonSchema) other);
-        return new EqualsBuilder().append(path, rhs.path).append(variables, rhs.variables).append(name, rhs.name).append(id, rhs.id).append(automatonType, rhs.automatonType).append(states, rhs.states).isEquals();
+        return new EqualsBuilder().append(path, rhs.path).append(variables, rhs.variables).append(name, rhs.name).append(id, rhs.id).append(params, rhs.params).append(automatonType, rhs.automatonType).append(states, rhs.states).isEquals();
     }
 
     public enum AutomatonType {

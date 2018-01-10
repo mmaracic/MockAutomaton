@@ -5,8 +5,8 @@
  */
 package hr.mmaracic.mockautomaton.model.internal;
 
-import hr.mmaracic.mockautomaton.InputMatcher;
-import hr.mmaracic.mockautomaton.OutputGenerator;
+import hr.mmaracic.mockautomaton.data.processing.InputMatcher;
+import hr.mmaracic.mockautomaton.data.processing.OutputGenerator;
 import hr.mmaracic.mockautomaton.model.AutomatonSchema;
 import hr.mmaracic.mockautomaton.model.State;
 import hr.mmaracic.mockautomaton.model.Transition;

@@ -11,6 +11,22 @@
                     "description": "Url path to which this automaton will respond",
                     "type": "string"
                 },
+                "params": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["name", "value"],
+                        "additionalProperties": false
+                    }
+                },
                 "automatonType": {
                     "description": "Type of the automaton - Json or Xml",
                     "type": "string",
@@ -67,6 +83,9 @@
                     "type": "string",
                     "minimum": 0
                 },
+                "description": {
+                    "type": "string"
+                },
                 "starting": {
                     "description": "True if this is a starting state",
                     "type": "boolean"
@@ -96,6 +115,9 @@
             "properties": {
                 "id": {
                     "description": "Unique id of the state",
+                    "type": "string"
+                },
+                "description": {
                     "type": "string"
                 },
                 "input": {

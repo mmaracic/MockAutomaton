@@ -17,6 +17,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "id",
+    "description",
     "input",
     "subpath",
     "delay",
@@ -33,6 +34,8 @@ public class Transition {
     @JsonProperty("id")
     @JsonPropertyDescription("Unique id of the state")
     private String id;
+    @JsonProperty("description")
+    private String description;
     @JsonProperty("input")
     private String input;
     /**
@@ -83,6 +86,16 @@ public class Transition {
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
+    }
+
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
+    }
+
+    @JsonProperty("description")
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @JsonProperty("input")
@@ -171,12 +184,12 @@ public class Transition {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("input", input).append("subpath", subpath).append("delay", delay).append("target", target).append("output", output).toString();
+        return new ToStringBuilder(this).append("id", id).append("description", description).append("input", input).append("subpath", subpath).append("delay", delay).append("target", target).append("output", output).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(output).append(input).append(delay).append(subpath).append(id).append(target).toHashCode();
+        return new HashCodeBuilder().append(output).append(input).append(delay).append(subpath).append(description).append(id).append(target).toHashCode();
     }
 
     @Override
@@ -188,7 +201,7 @@ public class Transition {
             return false;
         }
         Transition rhs = ((Transition) other);
-        return new EqualsBuilder().append(output, rhs.output).append(input, rhs.input).append(delay, rhs.delay).append(subpath, rhs.subpath).append(id, rhs.id).append(target, rhs.target).isEquals();
+        return new EqualsBuilder().append(output, rhs.output).append(input, rhs.input).append(delay, rhs.delay).append(subpath, rhs.subpath).append(description, rhs.description).append(id, rhs.id).append(target, rhs.target).isEquals();
     }
 
 }

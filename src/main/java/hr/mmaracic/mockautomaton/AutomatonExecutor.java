@@ -30,7 +30,9 @@ public class AutomatonExecutor {
         for(AutomatonSchema automatonDefinition: automatonDefinitions){
             Automaton automaton = new Automaton(automatonDefinition);
             this.automatons.put(automaton.getId(), automaton);
-        }        
+        }
+
+        
     }
     
     public String processDataEvent(String automatonId, String transitionId){

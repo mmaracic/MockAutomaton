@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hr.mmaracic.mockautomaton;
+package hr.mmaracic.mockautomaton.delay;
+
+import java.util.Map;
 
 /**
  *
  * @author mmaracic
  */
-public class InputMatcher {
-    
-    public static boolean compareInputs(String receivedInput, String desiredInput){
-        return false;
-    }
+public interface DelayExecutorSubscriber {
+    public void receiveNotificationData(Map<String, Object> delayData);
 }
